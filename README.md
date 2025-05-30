@@ -54,7 +54,7 @@ volumes:
 docker-compose up --build
 ```
 
-Puis ouvre dans ton navigateur :  
+Puis ouvre dans ton navigateur :
 👉 http://localhost:5002
 
 ---
@@ -71,7 +71,7 @@ Puis ouvre dans ton navigateur :
 ## 🧰 Inspecter les prédictions dans MongoDB
 
 ```bash
-docker exec -it mongo-db mongosh
+docker exec -it projet-mongo-db-1 mongosh
 ```
 
 ```js
