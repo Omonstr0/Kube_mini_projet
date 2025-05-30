@@ -81,6 +81,95 @@ db.predictions.find().pretty()
 
 ---
 
+## 🔒 Preuve que les réseaux sont privés
+
+### 1. Aucun port exposé pour les services internes
+
+Dans `docker-compose.yml`, seuls les ports du service `flask-app` sont exposés :
+
+```yaml
+  ia-service:
+    networks:
+      - frontend-net
+    # aucun port exposé → inaccessible depuis l'extérieur
+
+  mongo-db:
+    networks:
+      - backend-net
+    # aucun port exposé → inaccessible depuis l'extérieur
+```
+
+---
+
+### 2. Résultat de `docker ps`
+
+Seul `flask-app` expose un port :
+
+```bash
+$ docker ps
+
+CONTAINER ID   IMAGE             PORTS
+...            projet-flask-app  0.0.0.0:5002->5000/tcp
+...            projet-ia-service  <aucun port exposé>
+...            projet-mongo-db   <aucun port exposé>
+```
+
+➡️ `ia-service` et `mongo-db` ne sont **pas accessibles depuis l’extérieur**.
+
+---
+
+### 3. `docker network inspect`
+
+Chaque réseau Docker n'inclut que les services autorisés. Exemple :
+
+```bash
+docker network inspect mini-ai-app_frontend-net
+```
+
+Retour partiel :
+
+```json
+"Containers": {
+  "projet-flask-app-1": {...},
+  "projet-ia-service-1": {...}
+}
+```
+
+➡️ Seuls les conteneurs nécessaires sont connectés au réseau.
+
+---
+
+### 4. Tentative d'accès depuis l'extérieur échoue
+
+```bash
+curl http://localhost:5001
+```
+
+Résultat :
+
+```
+curl: (7) Failed to connect to localhost port 5001: Connection refused
+```
+
+➡️ Confirmation que `ia-service` est **isolé du réseau public**.
+
+---
+
+### 5. Communication interne prouvée dans le code
+
+Dans `flask-app/app.py` :
+
+```python
+requests.post('http://ia-service:5000/predict')
+```
+
+➡️ `flask-app` communique avec `ia-service` uniquement via le **réseau Docker privé** (`frontend-net`).
+
+---
+
+🟢 Ces éléments démontrent que l’architecture respecte les bonnes pratiques de **réseaux privés et sécurisés en environnement Docker**.
+
+
 ## ✅ Exigences respectées
 
 | Critère                       | Statut |
