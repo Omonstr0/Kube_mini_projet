@@ -142,13 +142,13 @@ Retour partiel :
 ### 4. Tentative d'accès depuis l'extérieur échoue
 
 ```bash
-curl http://localhost:5001
+curl http://localhost:5002
 ```
 
 Résultat :
 
 ```
-curl: (7) Failed to connect to localhost port 5001: Connection refused
+curl: (7) Failed to connect to localhost port 5002: Connection refused
 ```
 
 ➡️ Confirmation que `ia-service` est **isolé du réseau public**.
