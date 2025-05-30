@@ -1,0 +1,34 @@
+services:
+  flask-app:
+    build: ./flask-app
+    ports:
+      - "5002:5000"         # Expose uniquement l'app Flask vers localhost
+    networks:
+      - frontend-net
+      - backend-net
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - mongo-db
+      - ia-service
+
+  ia-service:
+    build: ./ia-service
+    # aucun port exposé => privé
+    networks:
+      - frontend-net
+
+  mongo-db:
+    image: mongo:6
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - backend-net
+    # aucun port exposé => privé
+
+volumes:
+  mongo-data:
+
+networks:
+  frontend-net:
+  backend-net:
