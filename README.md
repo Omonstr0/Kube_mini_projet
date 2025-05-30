@@ -123,7 +123,7 @@ CONTAINER ID   IMAGE             PORTS
 Chaque réseau Docker n'inclut que les services autorisés. Exemple :
 
 ```bash
-docker network inspect mini-ai-app_frontend-net
+docker network inspect Kube_mini_projet
 ```
 
 Retour partiel :
