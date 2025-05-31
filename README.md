@@ -123,7 +123,8 @@ CONTAINER ID   IMAGE             PORTS
 Chaque réseau Docker n'inclut que les services autorisés. Exemple :
 
 ```bash
-docker network inspect Kube_mini_projet
+docker network inspect projet_frontend-net
+docker network inspect projet_backend-net
 ```
 
 Retour partiel :
@@ -132,6 +133,7 @@ Retour partiel :
 "Containers": {
   "projet-flask-app-1": {...},
   "projet-ia-service-1": {...}
+  "projet-mongo-db-1": {...}
 }
 ```
 
